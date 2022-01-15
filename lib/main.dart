@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import './question.dart';
+import './answer.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -8,25 +11,36 @@ void main() {
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return MyAppState();
+    return _MyAppState();
   }
 }
 
-class MyAppState extends State<MyApp> {
-  var questionIndex = 0;
+class _MyAppState extends State<MyApp> {
+  var _questionIndex = 0;
 
-  void answerQuestion() {
+  void _answerQuestion() {
     setState(() {
-      questionIndex += 1;
+      _questionIndex += 1;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     var questions = [
-      "What's your favorite color?",
-      "What's your favorite animal?",
+      {
+        'questionText': "What's your favorite color?",
+        'answers': ['Black', 'Red', 'Green', 'White'],
+      },
+      {
+        'questionText': "What's your favorite animal?",
+        'answers': ['Dog', 'Tiger', 'Cat', 'Rabbit'],
+      },
+      {
+        'questionText': "Who's your favorite instructor",
+        'answers': ['Max', 'Max', 'Max', 'Max'],
+      }
     ];
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -34,19 +48,13 @@ class MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: [
-            Text(questions[questionIndex]),
-            RaisedButton(
-              onPressed: answerQuestion,
-              child: Text('Answer 1'),
+            Question(
+              questions[_questionIndex]['questionText'],
             ),
-            RaisedButton(
-              onPressed: answerQuestion,
-              child: Text('Answer 1'),
-            ),
-            RaisedButton(
-              onPressed: answerQuestion,
-              child: Text('Answer 1'),
-            ),
+            ...(questions[_questionIndex]['answers'] as List<String>)
+              .map((answer) => {
+                return Answer(_answerQuestion, answer);
+            }).toList().
           ],
         ),
       ),
